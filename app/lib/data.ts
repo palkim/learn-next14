@@ -11,18 +11,18 @@ import {
 import { formatCurrency } from './utils';
 //import { unstable_noStore as noStore } from 'next/cache';
 
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic' // -> Route Segment Config
 
 export async function fetchRevenue() {
   // Add noStore() here prevent the response from being cached.
   // This is equivalent to in fetch(..., {cache: 'no-store'}).
-  // Palkim: No store is not currently stable and can change use Route Segment Config instead for a stable solution.
+  // Palkim: No store is currently unstable and can change later, use Route Segment Config instead for a stable solution.
   //noStore()
   try {
     // Artificially delay a response for demo purposes.
     // Don't do this in real life :)
 
-    console.log('Fetching revenue data...');
+    // console.log('Fetching revenue data...');
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const data = await sql<Revenue>`SELECT * FROM revenue`;
@@ -38,7 +38,7 @@ export async function fetchRevenue() {
 
 export async function fetchLatestInvoices() {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     const data = await sql<LatestInvoiceRaw>`
       SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
       FROM invoices
@@ -58,6 +58,7 @@ export async function fetchLatestInvoices() {
 }
 
 export async function fetchCardData() {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   try {
     // You can probably combine these into a single SQL query
     // However, we are intentionally splitting them to demonstrate
@@ -152,15 +153,15 @@ export async function fetchInvoicesPages(query: string) {
 export async function fetchInvoiceById(id: string) {
   try {
     const data = await sql<InvoiceForm>`
-      SELECT
-        invoices.id,
-        invoices.customer_id,
-        invoices.amount,
-        invoices.status
-      FROM invoices
-      WHERE invoices.id = ${id};
+    SELECT
+    invoices.id,
+    invoices.customer_id,
+    invoices.amount,
+    invoices.status
+    FROM invoices
+    WHERE invoices.id = ${id};
     `;
-
+    
     const invoice = data.rows.map((invoice) => ({
       ...invoice,
       // Convert amount from cents to dollars
