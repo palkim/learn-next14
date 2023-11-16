@@ -10,7 +10,7 @@ export default async function RootLayout({
 }>) {
   console.log("children: ", children);
   const session = await auth();
-  if (!session && (children?.props?.childProp?.segment != '__PAGE__')) {
+  if (!session ) {
     redirect("/api/auth/signin")
   } 
   return (
