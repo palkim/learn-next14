@@ -6,6 +6,8 @@ import { lusitana } from '@/app/ui/fonts';
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
 import { fetchInvoicesPages } from '@/app/lib/data';
+import { auth } from "@/auth";
+import { redirect } from 'next/navigation';
  
 export default async function Page({
   searchParams,
@@ -15,6 +17,10 @@ export default async function Page({
     page?: string;
   };
 }) {
+  const session = await auth();
+  if (!session) {
+      redirect("/api/auth/signin")
+  }
   //nullish coalescing (??) operator is a logical operator that returns its 
   //right-hand side operand when its left-hand side operand is null
   const query = searchParams?.query ?? ''; 
