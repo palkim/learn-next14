@@ -2,15 +2,15 @@ import '@/app/ui/global.css'
 import { inter } from '@/app/ui/fonts'
 import { auth } from "@/auth";
 import { redirect } from 'next/navigation';
+import { ReactElement } from 'react';
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log("children: ", children);
   const session = await auth();
-  if (!session ) {
+  if (!session && (children as ReactElement<any>).props?.childProp?.segment != '__PAGE__') {
     redirect("/api/auth/signin")
   } 
   return (
