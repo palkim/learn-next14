@@ -73,11 +73,13 @@ export const config = {
   },
   events: {
     async signOut(message) {
-      let token: JWT = message.token
-      let signOutURL = new URL(`${process.env.AUTH_KEYCLOAK_ISSUER}/protocol/openid-connect/logout? 
-                post_logout_redirect_uri=${encodeURIComponent(<string>process.env.NEXTAUTH_URL)}`)
-      signOutURL.searchParams.set("id_token_hint", <string>token.id_token)
-      await fetch(signOutURL)
+      if ("token" in message && message.token) {
+        let token: JWT = message.token 
+        let signOutURL = new URL(`${process.env.AUTH_KEYCLOAK_ISSUER}/protocol/openid-connect/logout? 
+                  post_logout_redirect_uri=${encodeURIComponent(<string>process.env.NEXTAUTH_URL)}`)
+        signOutURL.searchParams.set("id_token_hint", <string>token.id_token)
+        await fetch(signOutURL)
+      }
     }
   }
 } satisfies NextAuthConfig
