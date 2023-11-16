@@ -4,13 +4,12 @@ import { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';
 import { Invoice } from '@/app/lib/definitions';
 import { notFound } from 'next/navigation';
 import { auth } from "@/auth";
-import { redirect } from 'next/navigation';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const session = await auth();
-  if (!session) {
-      redirect("/api/auth/signin")
-  }
+  // if (!session) {
+  //     redirect("/api/auth/signin")
+  // }
   const id = params.id;
   const [invoice, customers] = await Promise.all([
     fetchInvoiceById(id),

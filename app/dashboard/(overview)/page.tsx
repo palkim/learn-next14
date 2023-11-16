@@ -13,10 +13,9 @@ import { redirect } from 'next/navigation';
 
 export default async function Page() {
   const session = await auth();
-  if (!session) {
-    redirect("/api/auth/signin")
-  } 
-  
+  // if (!session) {
+  //   redirect("/api/auth/signin")
+  // } 
   return (
     <main>
       <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
